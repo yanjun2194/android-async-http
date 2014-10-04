@@ -1,12 +1,16 @@
 apply plugin: 'com.android.library'
 
+dependencies {
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5'
+}
+
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.1'
+    compileSdkVersion 20
+    buildToolsVersion '20'
 
     defaultConfig {
         minSdkVersion 3
-        targetSdkVersion 19
+        targetSdkVersion 20
     }
 
     lintOptions {
