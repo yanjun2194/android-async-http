@@ -16,7 +16,7 @@
     limitations under the License.
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.utils;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;

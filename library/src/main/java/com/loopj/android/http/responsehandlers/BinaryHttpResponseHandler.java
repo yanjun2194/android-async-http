@@ -16,11 +16,14 @@
     limitations under the License.
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.responsehandlers;
 
-import android.util.Log;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.utils.Logger;
 
 import org.apache.http.Header;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
@@ -30,7 +33,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * Used to intercept and handle the responses from requests made using {@link AsyncHttpClient}.
+ * Used to intercept and handle the responses from requests made using {@link com.loopj.android.http.AsyncHttpClient}.
  * Receives response body as byte array with a content-type whitelist. (e.g. checks Content-Type
  * against allowed list, Content-length). <p>&nbsp;</p> For example: <p>&nbsp;</p>
  * <pre>
@@ -88,7 +91,7 @@ public abstract class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
         if (allowedContentTypes != null) {
             mAllowedContentTypes = allowedContentTypes;
         } else {
-            Log.e(LOG_TAG, "Constructor passed allowedContentTypes was null !");
+            Logger.e(LOG_TAG, "Constructor passed allowedContentTypes was null !");
         }
     }
 
@@ -101,7 +104,7 @@ public abstract class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
     @Override
     public final void sendResponseMessage(HttpResponse response) throws IOException {
         StatusLine status = response.getStatusLine();
-        Header[] contentTypeHeaders = response.getHeaders(AsyncHttpClient.HEADER_CONTENT_TYPE);
+        Header[] contentTypeHeaders = response.getHeaders(HttpHeaders.CONTENT_TYPE);
         if (contentTypeHeaders.length != 1) {
             //malformed/ambiguous HTTP Header, ABORT!
             sendFailureMessage(
@@ -123,7 +126,7 @@ public abstract class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
                     foundAllowedContentType = true;
                 }
             } catch (PatternSyntaxException e) {
-                Log.e("BinaryHttpResponseHandler", "Given pattern is not valid: " + anAllowedContentType, e);
+                Logger.e("BinaryHttpResponseHandler", "Given pattern is not valid: " + anAllowedContentType, e);
             }
         }
         if (!foundAllowedContentType) {

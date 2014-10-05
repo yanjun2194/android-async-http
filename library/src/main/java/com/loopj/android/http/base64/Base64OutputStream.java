@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.loopj.android.http;
+package com.loopj.android.http.base64;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;

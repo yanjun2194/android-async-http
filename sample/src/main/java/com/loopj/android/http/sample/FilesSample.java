@@ -2,10 +2,10 @@ package com.loopj.android.http.sample;
 
 import android.util.Log;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.ResponseHandlerInterface;
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -30,7 +30,7 @@ public class FilesSample extends PostSample {
     }
 
     @Override
-    public RequestHandle executeSample(AsyncHttpClient client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
+    public RequestHandleInterface executeSample(AsyncHttpClientInterface client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
         try {
             RequestParams params = new RequestParams();
             final String contentType = RequestParams.APPLICATION_OCTET_STREAM;
@@ -41,7 +41,7 @@ public class FilesSample extends PostSample {
             params.put("fileFive", createTempFile("fileFive", 1060), contentType, "testingFileFive");
             params.setHttpEntityIsRepeatable(true);
             params.setUseJsonStreamer(false);
-            return client.post(this, URL, params, responseHandler);
+            return client.post(URL, null, null, responseHandler);
         } catch (FileNotFoundException fnfException) {
             Log.e(LOG_TAG, "executeSample failed with FileNotFoundException", fnfException);
         }

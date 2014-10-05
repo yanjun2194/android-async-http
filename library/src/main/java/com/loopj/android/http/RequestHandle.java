@@ -20,16 +20,19 @@ package com.loopj.android.http;
 
 import android.os.Looper;
 
+import com.loopj.android.http.interfaces.AsyncHttpRequestInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+
 import java.lang.ref.WeakReference;
 
 /**
  * A Handle to an AsyncRequest which can be used to cancel a running request.
  */
-public class RequestHandle {
-    private final WeakReference<AsyncHttpRequest> request;
+public class RequestHandle implements RequestHandleInterface {
+    private final WeakReference<AsyncHttpRequestInterface> request;
 
-    public RequestHandle(AsyncHttpRequest request) {
-        this.request = new WeakReference<AsyncHttpRequest>(request);
+    public RequestHandle(AsyncHttpRequestInterface request) {
+        this.request = new WeakReference<AsyncHttpRequestInterface>(request);
     }
 
     /**
@@ -47,8 +50,13 @@ public class RequestHandle {
      * @return false if the request could not be cancelled, typically because it has already
      * completed normally; true otherwise
      */
-    public boolean cancel(final boolean mayInterruptIfRunning) {
-        final AsyncHttpRequest _request = request.get();
+    public boolean cancel(boolean mayInterruptIfRunning) {
+        return cancelRequest(mayInterruptIfRunning);
+    }
+
+    @Override
+    public boolean cancelRequest(final boolean mayInterruptIfRunning) {
+        final AsyncHttpRequestInterface _request = request.get();
         if (_request != null) {
             if (Looper.myLooper() == Looper.getMainLooper()) {
                 new Thread(new Runnable() {
@@ -71,7 +79,7 @@ public class RequestHandle {
      * @return true if this task completed
      */
     public boolean isFinished() {
-        AsyncHttpRequest _request = request.get();
+        AsyncHttpRequestInterface _request = request.get();
         return _request == null || _request.isDone();
     }
 
@@ -80,15 +88,21 @@ public class RequestHandle {
      *
      * @return true if this task was cancelled before it completed
      */
+    @Override
     public boolean isCancelled() {
-        AsyncHttpRequest _request = request.get();
+        AsyncHttpRequestInterface _request = request.get();
         return _request == null || _request.isCancelled();
     }
 
-    public boolean shouldBeGarbageCollected() {
+    @Override
+    public boolean gc() {
         boolean should = isCancelled() || isFinished();
         if (should)
             request.clear();
         return should;
+    }
+
+    public boolean shouldBeGarbageCollected() {
+        return gc();
     }
 }

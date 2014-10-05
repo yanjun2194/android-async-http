@@ -16,11 +16,15 @@
     limitations under the License.
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.responsehandlers;
 
 import android.os.Message;
 import android.util.Log;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.utils.Logger;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -45,7 +49,7 @@ public abstract class DataAsyncHttpResponseHandler extends AsyncHttpResponseHand
      * @param responseBody response body received so far
      */
     public void onProgressData(byte[] responseBody) {
-        Log.d(LOG_TAG, "onProgressData(byte[]) was not overriden, but callback was received");
+        Logger.d(LOG_TAG, "onProgressData(byte[]) was not overriden, but callback was received");
     }
 
 
@@ -66,10 +70,10 @@ public abstract class DataAsyncHttpResponseHandler extends AsyncHttpResponseHand
                     try {
                         onProgressData((byte[]) response[0]);
                     } catch (Throwable t) {
-                        Log.e(LOG_TAG, "custom onProgressData contains an error", t);
+                        Logger.e(LOG_TAG, "custom onProgressData contains an error", t);
                     }
                 } else {
-                    Log.e(LOG_TAG, "PROGRESS_DATA_MESSAGE didn't got enough params");
+                    Logger.e(LOG_TAG, "PROGRESS_DATA_MESSAGE didn't got enough params");
                 }
                 break;
         }
@@ -108,7 +112,7 @@ public abstract class DataAsyncHttpResponseHandler extends AsyncHttpResponseHand
                             sendProgressMessage(count, (int) contentLength);
                         }
                     } finally {
-                        AsyncHttpClient.silentCloseInputStream(instream);
+                        IOUtils.closeQuietly(instream);
                     }
                     responseBody = buffer.toByteArray();
                 } catch (OutOfMemoryError e) {

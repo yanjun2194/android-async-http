@@ -23,14 +23,18 @@ import android.graphics.Color;
 import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpRequest;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.AsyncHttpRequestInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.responsehandlers.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
-import com.loopj.android.http.ResponseHandlerInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
 import java.util.Locale;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -44,8 +48,8 @@ public class PrePostProcessingSample extends SampleParentActivity {
     protected static final int DARKGREY = Color.parseColor("#888888");
 
     @Override
-    public RequestHandle executeSample(AsyncHttpClient client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
-        return client.post(this, URL, headers, entity, null, responseHandler);
+    public RequestHandleInterface executeSample(AsyncHttpClientInterface client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
+        return client.post(URL, null, null, responseHandler);
     }
 
     @Override
@@ -68,10 +72,10 @@ public class PrePostProcessingSample extends SampleParentActivity {
         return PROTOCOL + "httpbin.org/post";
     }
 
-    @Override
-    public AsyncHttpRequest getHttpRequest(DefaultHttpClient client, HttpContext httpContext, HttpUriRequest uriRequest, String contentType, ResponseHandlerInterface responseHandler, Context context) {
-        return new PrePostProcessRequest(client, httpContext, uriRequest, responseHandler);
-    }
+//    @Override
+//    public AsyncHttpRequestInterface getHttpRequest(HttpClient client, HttpContext httpContext, HttpUriRequest uriRequest, String contentType, ResponseHandlerInterface responseHandler, Context context) {
+//        return new PrePostProcessRequest(client, httpContext, uriRequest, responseHandler);
+//    }
 
     @Override
     public ResponseHandlerInterface getResponseHandler() {
@@ -131,13 +135,13 @@ public class PrePostProcessingSample extends SampleParentActivity {
         }
 
         @Override
-        public void onPreProcessRequest(AsyncHttpRequest request) {
+        public void preProcessRequest() {
             debugProcessing(LOG_TAG, "Pre",
                 "Request is about to be pre-processed", LIGHTGREY);
         }
 
         @Override
-        public void onPostProcessRequest(AsyncHttpRequest request) {
+        public void postProcessRequest() {
             debugProcessing(LOG_TAG, "Post",
                 "Request is about to be post-processed", DARKGREY);
         }

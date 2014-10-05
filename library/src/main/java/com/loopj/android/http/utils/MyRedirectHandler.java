@@ -16,7 +16,7 @@
     limitations under the License.
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.utils;
 
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -42,7 +42,7 @@ import java.net.URISyntaxException;
  * @author Aymon Fournier, aymon.fournier@gmail.com
  * @see <a href="https://stackoverflow.com/questions/3420767/httpclient-redirecting-to-url-with-spaces-throwing-exception">https://stackoverflow.com/questions/3420767/httpclient-redirecting-to-url-with-spaces-throwing-exception</a>
  */
-class MyRedirectHandler extends DefaultRedirectHandler {
+public class MyRedirectHandler extends DefaultRedirectHandler {
 
     private static final String REDIRECT_LOCATIONS = "http.protocol.redirect-locations";
     private final boolean enableRedirects;

@@ -80,18 +80,18 @@ public class Redirect302Sample extends GetSample {
         return R.string.title_redirect_302;
     }
 
-    @Override
-    public AsyncHttpClient getAsyncHttpClient() {
-        AsyncHttpClient ahc = super.getAsyncHttpClient();
-        HttpClient client = ahc.getHttpClient();
-        if (client instanceof DefaultHttpClient) {
-            Toast.makeText(this,
-                    String.format("redirects: %b\nrelative redirects: %b\ncircular redirects: %b",
-                            enableRedirects, enableRelativeRedirects, enableCircularRedirects),
-                    Toast.LENGTH_SHORT
-            ).show();
-            ahc.setEnableRedirects(enableRedirects, enableRelativeRedirects, enableCircularRedirects);
-        }
-        return ahc;
-    }
+//    @Override
+//    public AsyncHttpClient getAsyncHttpClient() {
+//        AsyncHttpClient ahc = super.getAsyncHttpClient();
+//        HttpClient client = ahc.getHttpClient();
+//        if (client instanceof DefaultHttpClient) {
+//            Toast.makeText(this,
+//                    String.format("redirects: %b\nrelative redirects: %b\ncircular redirects: %b",
+//                            enableRedirects, enableRelativeRedirects, enableCircularRedirects),
+//                    Toast.LENGTH_SHORT
+//            ).show();
+//            ahc.setEnableRedirects(enableRedirects, enableRelativeRedirects, enableCircularRedirects);
+//        }
+//        return ahc;
+//    }
 }

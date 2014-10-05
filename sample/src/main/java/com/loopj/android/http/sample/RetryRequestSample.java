@@ -47,15 +47,15 @@ public class RetryRequestSample extends GetSample {
 
         // The following exceptions will be whitelisted, i.e.: When an exception
         // of this type is raised, the request will be retried.
-        AsyncHttpClient.allowRetryExceptionClass(IOException.class);
-        AsyncHttpClient.allowRetryExceptionClass(SocketTimeoutException.class);
-        AsyncHttpClient.allowRetryExceptionClass(ConnectTimeoutException.class);
-
-        // The following exceptions will be blacklisted, i.e.: When an exception
-        // of this type is raised, the request will not be retried and it will
-        // fail immediately.
-        AsyncHttpClient.blockRetryExceptionClass(UnknownHostException.class);
-        AsyncHttpClient.blockRetryExceptionClass(ConnectionPoolTimeoutException.class);
+//        AsyncHttpClient.allowRetryExceptionClass(IOException.class);
+//        AsyncHttpClient.allowRetryExceptionClass(SocketTimeoutException.class);
+//        AsyncHttpClient.allowRetryExceptionClass(ConnectTimeoutException.class);
+//
+//        // The following exceptions will be blacklisted, i.e.: When an exception
+//        // of this type is raised, the request will not be retried and it will
+//        // fail immediately.
+//        AsyncHttpClient.blockRetryExceptionClass(UnknownHostException.class);
+//        AsyncHttpClient.blockRetryExceptionClass(ConnectionPoolTimeoutException.class);
     }
 
     @Override

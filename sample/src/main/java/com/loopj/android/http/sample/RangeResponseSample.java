@@ -21,15 +21,18 @@ package com.loopj.android.http.sample;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RangeFileAsyncHttpResponseHandler;
-import com.loopj.android.http.RequestHandle;
-import com.loopj.android.http.ResponseHandlerInterface;
-import java.io.File;
-import java.io.IOException;
+
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
+import com.loopj.android.http.responsehandlers.RangeFileAsyncHttpResponseHandler;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpUriRequest;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This sample demonstrates use of {@link RangeFileAsyncHttpResponseHandler} to
@@ -92,13 +95,13 @@ public class RangeResponseSample extends GetSample {
     }
 
     @Override
-    public RequestHandle executeSample(AsyncHttpClient client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
+    public RequestHandleInterface executeSample(AsyncHttpClientInterface client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
         if (fileSize > 0) {
             // Send a GET query when we know the size of the remote file.
-            return client.get(this, URL, headers, null, responseHandler);
+            return client.get(URL, null, null, responseHandler);
         } else {
             // Send a HEAD query to know the size of the remote file.
-            return client.head(this, URL, headers, null, responseHandler);
+            return client.head(URL, null, null, responseHandler);
         }
     }
 
@@ -133,9 +136,9 @@ public class RangeResponseSample extends GetSample {
                     // Is the content length known?
                     if (!supportsRange || fileSize < 1) {
                         Toast.makeText(
-                            RangeResponseSample.this,
-                            "Unable to determine remote file's size, or\nremote server doesn't support ranges",
-                            Toast.LENGTH_LONG
+                                RangeResponseSample.this,
+                                "Unable to determine remote file's size, or\nremote server doesn't support ranges",
+                                Toast.LENGTH_LONG
                         ).show();
                     }
                 }

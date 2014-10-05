@@ -23,7 +23,9 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.ResponseHandlerInterface;
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -48,7 +50,7 @@ public class JsonStreamerSample extends PostSample {
     private static final String LOG_TAG = "JsonStreamSample";
 
     @Override
-    public RequestHandle executeSample(AsyncHttpClient client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
+    public RequestHandleInterface executeSample(AsyncHttpClientInterface client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
         RequestParams params = new RequestParams();
         params.setUseJsonStreamer(true);
         JSONObject body;
@@ -65,8 +67,7 @@ public class JsonStreamerSample extends PostSample {
                 Log.w(LOG_TAG, "Unable to retrieve a JSON value", e);
             }
         }
-        return client.post(this, URL, headers, params,
-                RequestParams.APPLICATION_JSON, responseHandler);
+        return client.post(URL, null, null, responseHandler);
     }
 
     @Override

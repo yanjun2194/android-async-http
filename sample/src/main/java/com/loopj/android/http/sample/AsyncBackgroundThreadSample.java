@@ -24,9 +24,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.responsehandlers.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
-import com.loopj.android.http.ResponseHandlerInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -49,19 +51,19 @@ public class AsyncBackgroundThreadSample extends SampleParentActivity {
     }
 
     @Override
-    public RequestHandle executeSample(final AsyncHttpClient client, final String URL, final Header[] headers, HttpEntity entity, final ResponseHandlerInterface responseHandler) {
+    public RequestHandleInterface executeSample(final AsyncHttpClientInterface client, final String URL, final Header[] headers, HttpEntity entity, final ResponseHandlerInterface responseHandler) {
 
         final Activity ctx = this;
-        FutureTask<RequestHandle> future = new FutureTask<>(new Callable<RequestHandle>() {
-            public RequestHandle call() {
+        FutureTask<RequestHandleInterface> future = new FutureTask<>(new Callable<RequestHandleInterface>() {
+            public RequestHandleInterface call() {
                 Log.d(LOG_TAG, "Executing GET request on background thread");
-                return client.get(ctx, URL, headers, null, responseHandler);
+                return client.get(URL, null, null, responseHandler);
             }
         });
 
         executor.execute(future);
 
-        RequestHandle handle = null;
+        RequestHandleInterface handle = null;
         try {
             handle = future.get(5, TimeUnit.SECONDS);
             Log.d(LOG_TAG, "Background thread for GET request has finished");

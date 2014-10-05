@@ -21,6 +21,7 @@ package com.loopj.android.http.sample;
 import android.util.Log;
 
 import com.loopj.android.http.RequestHandle;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
 
 public class CancelRequestHandleSample extends ThreadingTimeoutSample {
 
@@ -35,10 +36,10 @@ public class CancelRequestHandleSample extends ThreadingTimeoutSample {
     public void onCancelButtonPressed() {
         Log.d(LOG_TAG, String.format("Number of handles found: %d", getRequestHandles().size()));
         int counter = 0;
-        for (RequestHandle handle : getRequestHandles()) {
+        for (RequestHandleInterface handle : getRequestHandles()) {
             if (!handle.isCancelled() && !handle.isFinished()) {
                 Log.d(LOG_TAG, String.format("Cancelling handle %d", counter));
-                Log.d(LOG_TAG, String.format("Handle %d cancel", counter) + (handle.cancel(true) ? " succeeded" : " failed"));
+                Log.d(LOG_TAG, String.format("Handle %d cancel", counter) + (handle.cancelRequest(true) ? " succeeded" : " failed"));
             } else {
                 Log.d(LOG_TAG, String.format("Handle %d already non-cancellable", counter));
             }

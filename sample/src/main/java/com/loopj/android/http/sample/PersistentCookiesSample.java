@@ -24,10 +24,12 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.BaseJsonHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.responsehandlers.BaseJsonHttpResponseHandler;
+import com.loopj.android.http.cookies.PersistentCookieStore;
 import com.loopj.android.http.RequestHandle;
-import com.loopj.android.http.ResponseHandlerInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
 import com.loopj.android.http.sample.util.SampleJSON;
 
 import org.apache.http.Header;
@@ -46,7 +48,7 @@ public class PersistentCookiesSample extends SampleParentActivity {
         cookieStore = new PersistentCookieStore(getApplicationContext());
 
         // Set the new cookie store.
-        getAsyncHttpClient().setCookieStore(cookieStore);
+//        getAsyncHttpClient().setCookieStore(cookieStore);
 
         super.onCreate(savedInstanceState);
     }
@@ -114,9 +116,9 @@ public class PersistentCookiesSample extends SampleParentActivity {
     }
 
     @Override
-    public RequestHandle executeSample(AsyncHttpClient client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
-        client.setEnableRedirects(true);
-        return client.get(this, URL, headers, null, responseHandler);
+    public RequestHandleInterface executeSample(AsyncHttpClientInterface client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
+//        client.setEnableRedirects(true);
+        return client.get(URL, null, null, responseHandler);
     }
 
 }

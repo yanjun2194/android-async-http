@@ -21,7 +21,7 @@
     fantastic droid-fu project: https://github.com/donnfelker/droid-fu
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.utils;
 
 import android.os.SystemClock;
 
@@ -39,7 +39,7 @@ import java.util.HashSet;
 
 import javax.net.ssl.SSLException;
 
-class RetryHandler implements HttpRequestRetryHandler {
+public class RetryHandler implements HttpRequestRetryHandler {
     private final static HashSet<Class<?>> exceptionWhitelist = new HashSet<Class<?>>();
     private final static HashSet<Class<?>> exceptionBlacklist = new HashSet<Class<?>>();
 
@@ -103,11 +103,11 @@ class RetryHandler implements HttpRequestRetryHandler {
         return retry;
     }
 
-    static void addClassToWhitelist(Class<?> cls) {
+    public static void addClassToWhitelist(Class<?> cls) {
         exceptionWhitelist.add(cls);
     }
 
-    static void addClassToBlacklist(Class<?> cls) {
+    public static void addClassToBlacklist(Class<?> cls) {
         exceptionBlacklist.add(cls);
     }
 

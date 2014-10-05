@@ -16,7 +16,7 @@
     limitations under the License.
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.interfaces;
 
 /**
  * This interface is used to encapsulate JSON values that are handled entirely

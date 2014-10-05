@@ -16,12 +16,18 @@
     limitations under the License.
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.utils;
 
-import android.util.Log;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.base64.Base64;
+import com.loopj.android.http.base64.Base64OutputStream;
+import com.loopj.android.http.interfaces.JsonValueInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
 import org.apache.http.message.BasicHeader;
 
 import java.io.FileInputStream;
@@ -66,13 +72,13 @@ public class JsonStreamerEntity implements HttpEntity {
 
     private static final Header HEADER_JSON_CONTENT =
             new BasicHeader(
-                    AsyncHttpClient.HEADER_CONTENT_TYPE,
+                    HttpHeaders.CONTENT_TYPE,
                     RequestParams.APPLICATION_JSON);
 
     private static final Header HEADER_GZIP_ENCODING =
             new BasicHeader(
-                    AsyncHttpClient.HEADER_CONTENT_ENCODING,
-                    AsyncHttpClient.ENCODING_GZIP);
+                    HttpHeaders.CONTENT_ENCODING,
+                    "gzip");
 
     // JSON data and associated meta-data to be uploaded.
     private final Map<String, Object> jsonParams = new HashMap<String, Object>();
@@ -221,11 +227,11 @@ public class JsonStreamerEntity implements HttpEntity {
         long elapsedTime = System.currentTimeMillis() - now;
         os.write((elapsedTime + "}").getBytes());
 
-        Log.i(LOG_TAG, "Uploaded JSON in " + Math.floor(elapsedTime / 1000) + " seconds");
+        Logger.i(LOG_TAG, "Uploaded JSON in " + Math.floor(elapsedTime / 1000) + " seconds");
 
         // Flush the contents up the stream.
         os.flush();
-        AsyncHttpClient.silentCloseOutputStream(os);
+        IOUtils.closeQuietly(os);
     }
 
     private void writeToFromStream(OutputStream os, RequestParams.StreamWrapper entry)
@@ -246,15 +252,14 @@ public class JsonStreamerEntity implements HttpEntity {
         }
 
         // Close the Base64 output stream.
-        AsyncHttpClient.silentCloseOutputStream(bos);
+        IOUtils.closeQuietly(bos);
 
         // End the meta data.
         endMetaData(os);
 
         // Close input stream.
         if (entry.autoClose) {
-            // Safely close the input stream.
-            AsyncHttpClient.silentCloseInputStream(entry.inputStream);
+            IOUtils.closeQuietly(entry.inputStream);
         }
     }
 
@@ -281,13 +286,13 @@ public class JsonStreamerEntity implements HttpEntity {
         }
 
         // Close the Base64 output stream.
-        AsyncHttpClient.silentCloseOutputStream(bos);
+        IOUtils.closeQuietly(bos);
 
         // End the meta data.
         endMetaData(os);
 
         // Safely close the input stream.
-        AsyncHttpClient.silentCloseInputStream(in);
+        IOUtils.closeQuietly(in);
     }
 
     private void writeMetaData(OutputStream os, String name, String contentType) throws IOException {

@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-    compile 'org.apache.httpcomponents:httpclient-android:4.3.5'
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.3'
+    compile 'commons-io:commons-io:2.4'
 }
 
 android {
@@ -18,7 +19,6 @@ android {
         warningsAsErrors true
         quiet false
         showAll true
-        disable 'OldTargetApi'
     }
 
     compileOptions {

@@ -5,8 +5,10 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.ResponseHandlerInterface;
-import com.loopj.android.http.TextHttpResponseHandler;
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
+import com.loopj.android.http.responsehandlers.TextHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -58,7 +60,7 @@ public class ContentTypeForHttpEntitySample extends SampleParentActivity {
     }
 
     @Override
-    public RequestHandle executeSample(AsyncHttpClient client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
+    public RequestHandleInterface executeSample(AsyncHttpClientInterface client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
         RequestParams rParams = new RequestParams();
         rParams.put("sample_key", "Sample String");
         try {
@@ -67,6 +69,7 @@ public class ContentTypeForHttpEntitySample extends SampleParentActivity {
         } catch (IOException e) {
             Log.e(LOG_TAG, "Cannot add sample file", e);
         }
-        return client.post(this, URL, headers, rParams, "multipart/form-data", responseHandler);
+        return client.post(URL, null, null, responseHandler);
+//        return client.post(this, URL, headers, rParams, "multipart/form-data", responseHandler);
     }
 }

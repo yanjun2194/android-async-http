@@ -27,12 +27,15 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.BaseJsonHttpResponseHandler;
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.responsehandlers.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
-import com.loopj.android.http.ResponseHandlerInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
 import com.loopj.android.http.sample.util.SampleJSON;
 import com.loopj.android.http.sample.util.SecureSocketFactory;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 
@@ -69,7 +72,7 @@ public class CustomCASample extends SampleParentActivity {
 
     // Instruct the library to retry connection when this exception is raised.
     static {
-        AsyncHttpClient.allowRetryExceptionClass(javax.net.ssl.SSLException.class);
+//        AsyncHttpClient.allowRetryExceptionClass(javax.net.ssl.SSLException.class);
     }
 
     @Override
@@ -83,19 +86,20 @@ public class CustomCASample extends SampleParentActivity {
                 KeyStore store = KeyStore.getInstance(KeyStore.getDefaultType());
                 is = getResources().openRawResource(R.raw.store);
                 store.load(is, STORE_PASS.toCharArray());
-                getAsyncHttpClient().setSSLSocketFactory(new SecureSocketFactory(store, STORE_ALIAS));
+//                getAsyncHttpClient().setSSLSocketFactory(new SecureSocketFactory(store, STORE_ALIAS));
             } catch (IOException e) {
                 throw new KeyStoreException(e);
             } catch (CertificateException e) {
                 throw new KeyStoreException(e);
             } catch (NoSuchAlgorithmException e) {
                 throw new KeyStoreException(e);
-            } catch (KeyManagementException e) {
-                throw new KeyStoreException(e);
-            } catch (UnrecoverableKeyException e) {
-                throw new KeyStoreException(e);
-            } finally {
-                AsyncHttpClient.silentCloseInputStream(is);
+//            } catch (KeyManagementException e) {
+//                throw new KeyStoreException(e);
+//            } catch (UnrecoverableKeyException e) {
+//                throw new KeyStoreException(e);
+            }
+            finally {
+                IOUtils.closeQuietly(is);
             }
         } catch (KeyStoreException e) {
             Log.e(LOG_TAG, "Unable to initialize key store", e);
@@ -159,8 +163,8 @@ public class CustomCASample extends SampleParentActivity {
     }
 
     @Override
-    public RequestHandle executeSample(AsyncHttpClient client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
-        return client.get(this, URL, headers, null, responseHandler);
+    public RequestHandleInterface executeSample(AsyncHttpClientInterface client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
+        return client.get(URL, null, null, responseHandler);
     }
 
     /**

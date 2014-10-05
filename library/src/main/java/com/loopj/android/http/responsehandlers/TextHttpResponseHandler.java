@@ -16,16 +16,18 @@
     limitations under the License.
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.responsehandlers;
 
 import android.util.Log;
+
+import com.loopj.android.http.utils.Logger;
 
 import org.apache.http.Header;
 
 import java.io.UnsupportedEncodingException;
 
 /**
- * Used to intercept and handle the responses from requests made using {@link AsyncHttpClient}. The
+ * Used to intercept and handle the responses from requests made using {@link com.loopj.android.http.AsyncHttpClient}. The
  * {@link #onSuccess(int, org.apache.http.Header[], String)} method is designed to be anonymously
  * overridden with your own response handling code. <p>&nbsp;</p> Additionally, you can override the
  * {@link #onFailure(int, org.apache.http.Header[], String, Throwable)}, {@link #onStart()}, and
@@ -120,7 +122,7 @@ public abstract class TextHttpResponseHandler extends AsyncHttpResponseHandler {
             }
             return toReturn;
         } catch (UnsupportedEncodingException e) {
-            Log.e(LOG_TAG, "Encoding response into string failed", e);
+            Logger.e(LOG_TAG, "Encoding response into string failed", e);
             return null;
         }
     }

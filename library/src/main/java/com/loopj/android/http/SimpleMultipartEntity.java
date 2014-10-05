@@ -24,10 +24,14 @@
 package com.loopj.android.http;
 
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
+import com.loopj.android.http.utils.Logger;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 
@@ -97,7 +101,7 @@ class SimpleMultipartEntity implements HttpEntity {
             out.write(CR_LF);
         } catch (final IOException e) {
             // Shall not happen on ByteArrayOutputStream
-            Log.e(LOG_TAG, "addPart ByteArrayOutputStream exception", e);
+            Logger.e(LOG_TAG, "addPart ByteArrayOutputStream exception", e);
         }
     }
 
@@ -117,6 +121,7 @@ class SimpleMultipartEntity implements HttpEntity {
     public void addPart(String key, File file, String type) {
         fileParts.add(new FilePart(key, file, normalizeContentType(type)));
     }
+
     public void addPart(String key, File file, String type, String customFileName) {
         fileParts.add(new FilePart(key, file, normalizeContentType(type), customFileName));
     }
@@ -142,7 +147,7 @@ class SimpleMultipartEntity implements HttpEntity {
         out.write(CR_LF);
         out.flush();
 
-        AsyncHttpClient.silentCloseOutputStream(out);
+        IOUtils.closeQuietly(out);
     }
 
     private String normalizeContentType(String type) {
@@ -150,19 +155,19 @@ class SimpleMultipartEntity implements HttpEntity {
     }
 
     private byte[] createContentType(String type) {
-        String result = AsyncHttpClient.HEADER_CONTENT_TYPE + ": " + normalizeContentType(type) + STR_CR_LF;
+        String result = HttpHeaders.CONTENT_TYPE + ": " + normalizeContentType(type) + STR_CR_LF;
         return result.getBytes();
     }
 
     private byte[] createContentDisposition(String key) {
         return (
-                AsyncHttpClient.HEADER_CONTENT_DISPOSITION +
+                "Content-Disposition" +
                         ": form-data; name=\"" + key + "\"" + STR_CR_LF).getBytes();
     }
 
     private byte[] createContentDisposition(String key, String fileName) {
         return (
-                AsyncHttpClient.HEADER_CONTENT_DISPOSITION +
+                "Content-Disposition" +
                         ": form-data; name=\"" + key + "\"" +
                         "; filename=\"" + fileName + "\"" + STR_CR_LF).getBytes();
     }
@@ -198,7 +203,7 @@ class SimpleMultipartEntity implements HttpEntity {
                 headerStream.write(CR_LF);
             } catch (IOException e) {
                 // Can't happen on ByteArrayOutputStream
-                Log.e(LOG_TAG, "createHeader ByteArrayOutputStream exception", e);
+                Logger.e(LOG_TAG, "createHeader ByteArrayOutputStream exception", e);
             }
             return headerStream.toByteArray();
         }
@@ -222,7 +227,7 @@ class SimpleMultipartEntity implements HttpEntity {
             out.write(CR_LF);
             updateProgress(CR_LF.length);
             out.flush();
-            AsyncHttpClient.silentCloseInputStream(inputStream);
+            IOUtils.closeQuietly(inputStream);
         }
     }
 
@@ -245,7 +250,7 @@ class SimpleMultipartEntity implements HttpEntity {
     @Override
     public Header getContentType() {
         return new BasicHeader(
-                AsyncHttpClient.HEADER_CONTENT_TYPE,
+                HttpHeaders.CONTENT_TYPE,
                 "multipart/form-data; boundary=" + boundary);
     }
 

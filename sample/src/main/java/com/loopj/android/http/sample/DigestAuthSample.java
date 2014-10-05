@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.widget.EditText;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestHandle;
-import com.loopj.android.http.ResponseHandlerInterface;
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
 
 public class DigestAuthSample extends GetSample {
 
@@ -41,9 +40,9 @@ public class DigestAuthSample extends GetSample {
     }
 
     @Override
-    public RequestHandle executeSample(AsyncHttpClient client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
-        setCredentials(client, URL);
-        return client.get(this, URL, headers, null, responseHandler);
+    public RequestHandleInterface executeSample(AsyncHttpClientInterface client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
+//        setCredentials(client, URL);
+        return client.get(URL, null, null, responseHandler);
     }
 
     @Override
@@ -63,13 +62,13 @@ public class DigestAuthSample extends GetSample {
 
     private void setCredentials(AsyncHttpClient client, String URL) {
         Uri parsed = Uri.parse(URL);
-        client.clearCredentialsProvider();
-        client.setCredentials(
-                new AuthScope(parsed.getHost(), parsed.getPort() == -1 ? 80 : parsed.getPort()),
-                new UsernamePasswordCredentials(
-                        usernameField.getText().toString(),
-                        passwordField.getText().toString()
-                )
-        );
+//        client.clearCredentialsProvider();
+//        client.setCredentials(
+//                new AuthScope(parsed.getHost(), parsed.getPort() == -1 ? 80 : parsed.getPort()),
+//                new UsernamePasswordCredentials(
+//                        usernameField.getText().toString(),
+//                        passwordField.getText().toString()
+//                )
+//        );
     }
 }

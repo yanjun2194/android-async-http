@@ -16,11 +16,14 @@
     limitations under the License.
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.responsehandlers;
 
 import android.content.Context;
-import android.util.Log;
 
+import com.loopj.android.http.utils.AssertUtils;
+import com.loopj.android.http.utils.Logger;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 
@@ -90,7 +93,7 @@ public abstract class FileAsyncHttpResponseHandler extends AsyncHttpResponseHand
             assert context != null;
             return File.createTempFile("temp_", "_handled", context.getCacheDir());
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Cannot create temporary file", e);
+            Logger.e(LOG_TAG, "Cannot create temporary file", e);
         }
         return null;
     }
@@ -152,9 +155,9 @@ public abstract class FileAsyncHttpResponseHandler extends AsyncHttpResponseHand
                         sendProgressMessage(count, (int) contentLength);
                     }
                 } finally {
-                    AsyncHttpClient.silentCloseInputStream(instream);
+                    IOUtils.closeQuietly(instream);
                     buffer.flush();
-                    AsyncHttpClient.silentCloseOutputStream(buffer);
+                    IOUtils.closeQuietly(buffer);
                 }
             }
         }

@@ -16,7 +16,7 @@
     limitations under the License.
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.interfaces;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;

@@ -22,21 +22,25 @@ import android.content.Context;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpRequest;
 import com.loopj.android.http.RequestHandle;
-import com.loopj.android.http.ResponseHandlerInterface;
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 
 import java.util.List;
+
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 
 public interface SampleInterface {
 
-    List<RequestHandle> getRequestHandles();
+    List<RequestHandleInterface> getRequestHandles();
 
-    void addRequestHandle(RequestHandle handle);
+    void addRequestHandle(RequestHandleInterface handle);
 
     void onRunButtonPressed();
 
@@ -46,11 +50,11 @@ public interface SampleInterface {
 
     HttpEntity getRequestEntity();
 
-    AsyncHttpClient getAsyncHttpClient();
+    AsyncHttpClientInterface getAsyncHttpClient();
 
-    void setAsyncHttpClient(AsyncHttpClient client);
+    void setAsyncHttpClient(AsyncHttpClientInterface client);
 
-    AsyncHttpRequest getHttpRequest(DefaultHttpClient client, HttpContext httpContext, HttpUriRequest uriRequest, String contentType, ResponseHandlerInterface responseHandler, Context context);
+    AsyncHttpRequest getHttpRequest(HttpClient client, HttpContext httpContext, HttpUriRequest uriRequest, String contentType, ResponseHandlerInterface responseHandler, Context context);
 
     ResponseHandlerInterface getResponseHandler();
 
@@ -66,5 +70,5 @@ public interface SampleInterface {
 
     boolean isCancelButtonAllowed();
 
-    RequestHandle executeSample(AsyncHttpClient client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler);
+    RequestHandleInterface executeSample(AsyncHttpClientInterface client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler);
 }

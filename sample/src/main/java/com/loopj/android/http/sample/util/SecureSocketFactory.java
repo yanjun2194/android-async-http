@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 
 import java.io.ByteArrayInputStream;
@@ -84,7 +85,7 @@ public class SecureSocketFactory extends SSLSocketFactory {
         // Turn it to X509 format.
         InputStream is = new ByteArrayInputStream(rootca.getEncoded());
         X509Certificate x509ca = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(is);
-        AsyncHttpClient.silentCloseInputStream(is);
+        IOUtils.closeQuietly(is);
 
         if (null == x509ca) {
             throw new CertificateException("Embedded SSL certificate has expired.");

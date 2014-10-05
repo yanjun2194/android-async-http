@@ -16,12 +16,12 @@
     limitations under the License.
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.utils;
 
 /**
  * Internal class, used to make some asserts, throw AssertError if asserts fail.
  */
-class AssertUtils {
+public class AssertUtils {
 
     private AssertUtils() {
     }

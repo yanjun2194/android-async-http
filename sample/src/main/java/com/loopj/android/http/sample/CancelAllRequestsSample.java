@@ -27,6 +27,6 @@ public class CancelAllRequestsSample extends ThreadingTimeoutSample {
 
     @Override
     public void onCancelButtonPressed() {
-        getAsyncHttpClient().cancelAllRequests(true);
+//        getAsyncHttpClient().cancelAllRequests(true);
     }
 }

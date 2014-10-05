@@ -19,13 +19,11 @@
 package com.loopj.android.http.sample;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestHandle;
-import com.loopj.android.http.ResponseHandlerInterface;
-import com.loopj.android.http.SyncHttpClient;
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
+import com.loopj.android.http.responsehandlers.AsyncHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -36,7 +34,7 @@ public class SynchronousClientSample extends GetSample {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAsyncHttpClient(new SyncHttpClient());
+//        setAsyncHttpClient(AsyncHttpClient.getInstance().);
     }
 
     @Override
@@ -60,19 +58,19 @@ public class SynchronousClientSample extends GetSample {
     }
 
     @Override
-    public RequestHandle executeSample(final AsyncHttpClient client, final String URL, final Header[] headers, HttpEntity entity, final ResponseHandlerInterface responseHandler) {
-        if (client instanceof SyncHttpClient) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(LOG_TAG, "Before Request");
-                    client.get(SynchronousClientSample.this, URL, headers, null, responseHandler);
-                    Log.d(LOG_TAG, "After Request");
-                }
-            }).start();
-        } else {
-            Log.e(LOG_TAG, "Error, not using SyncHttpClient");
-        }
+    public RequestHandleInterface executeSample(final AsyncHttpClientInterface client, final String URL, final Header[] headers, HttpEntity entity, final ResponseHandlerInterface responseHandler) {
+//        if (client instanceof SyncHttpClient) {
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Log.d(LOG_TAG, "Before Request");
+//                    client.get(SynchronousClientSample.this, URL, headers, null, responseHandler);
+//                    Log.d(LOG_TAG, "After Request");
+//                }
+//            }).start();
+//        } else {
+//            Log.e(LOG_TAG, "Error, not using SyncHttpClient");
+//        }
         /**
          * SyncHttpClient does not return RequestHandle,
          * it executes each request directly,

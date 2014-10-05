@@ -20,8 +20,10 @@ package com.loopj.android.http.sample;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestHandle;
-import com.loopj.android.http.ResponseHandlerInterface;
-import com.loopj.android.http.SaxAsyncHttpResponseHandler;
+import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
+import com.loopj.android.http.responsehandlers.SaxAsyncHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -88,8 +90,8 @@ public class SaxSample extends SampleParentActivity {
     }
 
     @Override
-    public RequestHandle executeSample(AsyncHttpClient client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
-        return client.get(this, URL, headers, null, responseHandler);
+    public RequestHandleInterface executeSample(AsyncHttpClientInterface client, String URL, Header[] headers, HttpEntity entity, ResponseHandlerInterface responseHandler) {
+        return client.get(URL,null, null, responseHandler);
     }
 
     private class Tuple {

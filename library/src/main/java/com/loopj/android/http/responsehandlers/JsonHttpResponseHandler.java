@@ -16,9 +16,11 @@
     limitations under the License.
 */
 
-package com.loopj.android.http;
+package com.loopj.android.http.responsehandlers;
 
 import android.util.Log;
+
+import com.loopj.android.http.utils.Logger;
 
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
@@ -28,7 +30,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 /**
- * Used to intercept and handle the responses from requests made using {@link AsyncHttpClient}, with
+ * Used to intercept and handle the responses from requests made using {@link com.loopj.android.http.AsyncHttpClient}, with
  * automatic parsing into a {@link JSONObject} or {@link JSONArray}. <p>&nbsp;</p> This class is
  * designed to be passed to get, post, put and delete requests with the {@link #onSuccess(int,
  * org.apache.http.Header[], org.json.JSONArray)} or {@link #onSuccess(int,
@@ -63,7 +65,7 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
      * @param response   parsed response if any
      */
     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-        Log.w(LOG_TAG, "onSuccess(int, Header[], JSONObject) was not overriden, but callback was received");
+        Logger.w(LOG_TAG, "onSuccess(int, Header[], JSONObject) was not overriden, but callback was received");
     }
 
     /**
@@ -74,7 +76,7 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
      * @param response   parsed response if any
      */
     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-        Log.w(LOG_TAG, "onSuccess(int, Header[], JSONArray) was not overriden, but callback was received");
+        Logger.w(LOG_TAG, "onSuccess(int, Header[], JSONArray) was not overriden, but callback was received");
     }
 
     /**
@@ -86,7 +88,7 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
      * @param errorResponse parsed response if any
      */
     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-        Log.w(LOG_TAG, "onFailure(int, Header[], Throwable, JSONObject) was not overriden, but callback was received", throwable);
+        Logger.w(LOG_TAG, "onFailure(int, Header[], Throwable, JSONObject) was not overriden, but callback was received", throwable);
     }
 
     /**
@@ -98,17 +100,17 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
      * @param errorResponse parsed response if any
      */
     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-        Log.w(LOG_TAG, "onFailure(int, Header[], Throwable, JSONArray) was not overriden, but callback was received", throwable);
+        Logger.w(LOG_TAG, "onFailure(int, Header[], Throwable, JSONArray) was not overriden, but callback was received", throwable);
     }
 
     @Override
     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-        Log.w(LOG_TAG, "onFailure(int, Header[], String, Throwable) was not overriden, but callback was received", throwable);
+        Logger.w(LOG_TAG, "onFailure(int, Header[], String, Throwable) was not overriden, but callback was received", throwable);
     }
 
     @Override
     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-        Log.w(LOG_TAG, "onSuccess(int, Header[], String) was not overriden, but callback was received");
+        Logger.w(LOG_TAG, "onSuccess(int, Header[], String) was not overriden, but callback was received");
     }
 
     @Override
@@ -196,7 +198,7 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
                 parser.run();
             }
         } else {
-            Log.v(LOG_TAG, "response body is null, calling onFailure(Throwable, JSONObject)");
+            Logger.v(LOG_TAG, "response body is null, calling onFailure(Throwable, JSONObject)");
             onFailure(statusCode, headers, throwable, (JSONObject) null);
         }
     }

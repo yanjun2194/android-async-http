@@ -20,6 +20,10 @@ package com.loopj.android.http;
 
 import android.util.Log;
 
+import com.loopj.android.http.interfaces.ResponseHandlerInterface;
+import com.loopj.android.http.utils.JsonStreamerEntity;
+import com.loopj.android.http.utils.Logger;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -88,6 +92,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * client.post("http://myendpoint.com", params, responseHandler);
  * </pre>
  */
+@Deprecated
 public class RequestParams implements Serializable {
 
     public final static String APPLICATION_OCTET_STREAM =
@@ -116,7 +121,7 @@ public class RequestParams implements Serializable {
         if (encoding != null) {
             this.contentEncoding = encoding;
         } else {
-            Log.d(LOG_TAG, "setContentEncoding called with null attribute");
+            Logger.w(LOG_TAG, "setContentEncoding called with null attribute");
         }
     }
 
@@ -488,7 +493,7 @@ public class RequestParams implements Serializable {
         try {
             return new UrlEncodedFormEntity(getParamsList(), contentEncoding);
         } catch (UnsupportedEncodingException e) {
-            Log.e(LOG_TAG, "createFormEntity failed", e);
+            Logger.e(LOG_TAG, "createFormEntity failed", e);
             return null; // Can happen, if the 'contentEncoding' won't be HTTP.UTF_8
         }
     }
