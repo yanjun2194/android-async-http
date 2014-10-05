@@ -31,6 +31,11 @@ import com.loopj.android.http.utils.Logger;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGetHC4;
 import org.apache.http.client.methods.HttpHeadHC4;
+import org.apache.http.client.methods.HttpOptionsHC4;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPostHC4;
+import org.apache.http.client.methods.HttpPutHC4;
+import org.apache.http.client.methods.HttpTraceHC4;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import java.util.concurrent.ExecutorService;
@@ -104,7 +109,8 @@ public class AsyncHttpClient implements AsyncHttpClientInterface {
 
     @Override
     public RequestHandleInterface post(String targetEndpoint, RequestParamsInterface requestParamsInterface, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface) {
-        return null;
+        HttpPostHC4 uriRequest = new HttpPostHC4(targetEndpoint);
+        return executeRawRequest(uriRequest, requestOptionsInterface, responseHandlerInterface);
     }
 
     @Override
@@ -115,27 +121,32 @@ public class AsyncHttpClient implements AsyncHttpClientInterface {
 
     @Override
     public RequestHandleInterface put(String targetEndpoint, RequestParamsInterface requestParamsInterface, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface) {
-        return null;
+        HttpPutHC4 uriRequest = new HttpPutHC4(targetEndpoint);
+        return executeRawRequest(uriRequest, requestOptionsInterface, responseHandlerInterface);
     }
 
     @Override
     public RequestHandleInterface delete(String targetEndpoint, RequestParamsInterface requestParamsInterface, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface) {
-        return null;
+        HttpPostHC4 uriRequest = new HttpPostHC4(targetEndpoint);
+        return executeRawRequest(uriRequest, requestOptionsInterface, responseHandlerInterface);
     }
 
     @Override
     public RequestHandleInterface trace(String targetEndpoint, RequestParamsInterface requestParamsInterface, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface) {
-        return null;
+        HttpTraceHC4 uriRequest = new HttpTraceHC4(targetEndpoint);
+        return executeRawRequest(uriRequest, requestOptionsInterface, responseHandlerInterface);
     }
 
     @Override
     public RequestHandleInterface options(String targetEndpoint, RequestParamsInterface requestParamsInterface, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface) {
-        return null;
+        HttpOptionsHC4 uriRequest = new HttpOptionsHC4(targetEndpoint);
+        return executeRawRequest(uriRequest, requestOptionsInterface, responseHandlerInterface);
     }
 
     @Override
-    public RequestHandleInterface connect(String targetEndpoint, RequestParamsInterface requestParamsInterface, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface) {
-        return null;
+    public RequestHandleInterface patch(String targetEndpoint, RequestParamsInterface requestParamsInterface, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface) {
+        HttpPatch uriRequest = new HttpPatch(targetEndpoint);
+        return executeRawRequest(uriRequest, requestOptionsInterface, responseHandlerInterface);
     }
 
     @Override

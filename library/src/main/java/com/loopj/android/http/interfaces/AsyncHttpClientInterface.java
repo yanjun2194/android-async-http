@@ -1,9 +1,7 @@
 package com.loopj.android.http.interfaces;
 
-import org.apache.http.client.methods.HttpRequestBaseHC4;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import java.net.URI;
 import java.util.concurrent.ExecutorService;
 
 public interface AsyncHttpClientInterface {
@@ -71,7 +69,7 @@ public interface AsyncHttpClientInterface {
             ResponseHandlerInterface responseHandlerInterface
     );
 
-    RequestHandleInterface connect(
+    RequestHandleInterface patch(
             String targetEndpoint,
             RequestParamsInterface requestParamsInterface,
             RequestOptionsInterface requestOptionsInterface,

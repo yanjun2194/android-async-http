@@ -1,7 +1,5 @@
 package com.loopj.android.http.interfaces;
 
-import com.loopj.android.http.impl.AsyncHttpClientOptions;
-
 import org.apache.http.client.HttpClient;
 
 import java.util.concurrent.ExecutorService;
@@ -25,9 +23,12 @@ public interface AsyncHttpClientOptionsInterface {
     AsyncHttpClientOptionsInterface setAsyncHttpRequestClass(Class<? extends AsyncHttpRequestInterface> requestClass);
 
     AsyncHttpClientOptionsInterface enableLogging();
+
     AsyncHttpClientOptionsInterface disableLogging();
+
     AsyncHttpClientOptionsInterface setLoggingVerbosity(int logVerbosity);
 
     boolean isLoggingEnabled();
+
     int getLoggingVerbosity();
 }
