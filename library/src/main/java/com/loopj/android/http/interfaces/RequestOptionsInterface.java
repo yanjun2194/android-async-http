@@ -1,5 +1,6 @@
 package com.loopj.android.http.interfaces;
 
+import org.apache.http.HttpVersion;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.RedirectHandler;
 
@@ -106,5 +107,11 @@ public interface RequestOptionsInterface extends Serializable, Cloneable {
     );
 
     boolean getUseSynchronous();
+
+    RequestOptionsInterface setUseHttpProtocolVersion(
+            HttpVersion version
+    );
+
+    HttpVersion getHttpProtocolVersion();
 
 }

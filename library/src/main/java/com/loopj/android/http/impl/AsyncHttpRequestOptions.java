@@ -2,6 +2,7 @@ package com.loopj.android.http.impl;
 
 import com.loopj.android.http.interfaces.RequestOptionsInterface;
 
+import org.apache.http.HttpVersion;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.RedirectHandler;
 
@@ -21,6 +22,7 @@ public class AsyncHttpRequestOptions implements RequestOptionsInterface {
     int connectTimeout = 60;
     int responseTimeout = 60;
     boolean gzipEnabled = true;
+    HttpVersion httpProtocolVersion = HttpVersion.HTTP_1_1;
 
     public AsyncHttpRequestOptions() {
 
@@ -207,6 +209,17 @@ public class AsyncHttpRequestOptions implements RequestOptionsInterface {
     @Override
     public boolean getUseSynchronous() {
         return useSynchronous;
+    }
+
+    @Override
+    public RequestOptionsInterface setUseHttpProtocolVersion(HttpVersion version) {
+        httpProtocolVersion = version;
+        return this;
+    }
+
+    @Override
+    public HttpVersion getHttpProtocolVersion() {
+        return httpProtocolVersion;
     }
 
 }
