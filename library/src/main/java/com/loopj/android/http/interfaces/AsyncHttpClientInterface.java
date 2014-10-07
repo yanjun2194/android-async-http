@@ -18,6 +18,8 @@ public interface AsyncHttpClientInterface {
 
     ExecutorService getUsedThreadPool();
 
+    AsyncHttpRequestInterface getConfiguredAsyncHttpRequest(HttpUriRequest request, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface);
+
     // HTTP methods
 
     RequestHandleInterface get(

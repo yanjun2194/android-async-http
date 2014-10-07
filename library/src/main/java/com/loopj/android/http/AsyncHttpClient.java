@@ -18,7 +18,6 @@
 
 package com.loopj.android.http;
 
-import com.loopj.android.http.impl.AsyncHttpClientOptions;
 import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
 import com.loopj.android.http.interfaces.AsyncHttpClientOptionsInterface;
 import com.loopj.android.http.interfaces.AsyncHttpRequestInterface;
@@ -44,29 +43,12 @@ public class AsyncHttpClient implements AsyncHttpClientInterface {
 
     public static final String LOG_TAG = "AsyncHttpClient";
 
-    private volatile static AsyncHttpClient INSTANCE;
-
     private final HttpClient httpClient;
     private RequestOptionsInterface defaultRequestOptions;
     private ExecutorService threadPool;
     private Class<? extends AsyncHttpRequestInterface> requestClass;
 
-    public static AsyncHttpClient getInstance() {
-        return getInstance(new AsyncHttpClientOptions());
-    }
-
-    public static AsyncHttpClient getInstance(AsyncHttpClientOptionsInterface options) {
-        if (INSTANCE == null) {
-            synchronized (AsyncHttpClient.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new AsyncHttpClient(options);
-                }
-            }
-        }
-        return INSTANCE;
-    }
-
-    private AsyncHttpClient(AsyncHttpClientOptionsInterface options) {
+    public AsyncHttpClient(AsyncHttpClientOptionsInterface options) {
         httpClient = options.getHttpClient();
         defaultRequestOptions = options.getDefaultRequestOptions();
         threadPool = options.getThreadPool();
@@ -99,6 +81,21 @@ public class AsyncHttpClient implements AsyncHttpClientInterface {
     @Override
     public ExecutorService getUsedThreadPool() {
         return threadPool;
+    }
+
+    @Override
+    public AsyncHttpRequestInterface getConfiguredAsyncHttpRequest(HttpUriRequest request, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface) {
+        AsyncHttpRequestInterface asyncRequest;
+        try {
+            asyncRequest = requestClass.newInstance();
+        } catch (Exception e) {
+            Logger.e(LOG_TAG, "getConfiguredAsyncHttpRequest", e);
+            return null;
+        }
+        asyncRequest.setHttpClient(this.httpClient);
+        asyncRequest.setHttpRequest(request);
+        asyncRequest.setResponseHandler(responseHandlerInterface);
+        return asyncRequest;
     }
 
     @Override
@@ -151,16 +148,9 @@ public class AsyncHttpClient implements AsyncHttpClientInterface {
 
     @Override
     public RequestHandleInterface executeRawRequest(HttpUriRequest request, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface) {
-        try {
-            AsyncHttpRequestInterface asyncRequest = requestClass.newInstance();
-            asyncRequest.setHttpClient(this.httpClient);
-            asyncRequest.setHttpRequest(request);
-            asyncRequest.setResponseHandler(responseHandlerInterface);
-            threadPool.submit(asyncRequest);
-            return new RequestHandle(asyncRequest);
-        } catch (Exception e) {
-            Logger.e(LOG_TAG, "executeRawRequest failed with exception", e);
-        }
-        return null;
+        AsyncHttpRequestInterface asyncRequest = getConfiguredAsyncHttpRequest(request, requestOptionsInterface, responseHandlerInterface);
+        threadPool.submit(asyncRequest);
+        return new RequestHandle(asyncRequest);
     }
+
 }

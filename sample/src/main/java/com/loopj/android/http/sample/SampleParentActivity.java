@@ -20,7 +20,6 @@ package com.loopj.android.http.sample;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,21 +35,19 @@ import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpRequest;
-import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.impl.AsyncHttpClientOptions;
 import com.loopj.android.http.impl.AsyncHttpRequestOptions;
 import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
+import com.loopj.android.http.interfaces.AsyncHttpRequestInterface;
 import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.interfaces.RequestOptionsInterface;
 import com.loopj.android.http.interfaces.ResponseHandlerInterface;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HttpContext;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -62,28 +59,25 @@ import java.util.Locale;
 
 public abstract class SampleParentActivity extends Activity implements SampleInterface {
 
-    private AsyncHttpClientInterface asyncHttpClient = AsyncHttpClient.getInstance(
+    private AsyncHttpClientInterface asyncHttpClient = new AsyncHttpClient(
             new AsyncHttpClientOptions()
-            .setDefaultRequestOptions(
-                    new AsyncHttpRequestOptions()
-                    .setConnectTimeout(5000)
-                    .setGzipSupportEnabled(true)
-                    .setHttpPort(80)
-                    .setHttpsPort(443)
-            )
-            .enableLogging()
-            .setLoggingVerbosity(Log.VERBOSE)
-    );
-//    private AsyncHttpClient asyncHttpClient = new AsyncHttpClient() {
-//
-//        @Override
-//        protected AsyncHttpRequest newAsyncHttpRequest(DefaultHttpClient client, HttpContext httpContext, HttpUriRequest uriRequest, String contentType, ResponseHandlerInterface responseHandler, Context context) {
-//            AsyncHttpRequest httpRequest = getHttpRequest(client, httpContext, uriRequest, contentType, responseHandler, context);
-//            return httpRequest == null
-//                    ? super.newAsyncHttpRequest(client, httpContext, uriRequest, contentType, responseHandler, context)
-//                    : httpRequest;
-//        }
-//    };
+                    .setDefaultRequestOptions(
+                            new AsyncHttpRequestOptions()
+                                    .setConnectTimeout(5000)
+                                    .setGzipSupportEnabled(true)
+                                    .setHttpPort(80)
+                                    .setHttpsPort(443)
+                    )
+                    .enableLogging()
+                    .setLoggingVerbosity(Log.VERBOSE)
+    ) {
+        @Override
+        public AsyncHttpRequestInterface getConfiguredAsyncHttpRequest(HttpUriRequest request, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface) {
+            AsyncHttpRequestInterface customRequest = getHttpRequest(request, requestOptionsInterface, responseHandlerInterface);
+            return customRequest == null ? super.getConfiguredAsyncHttpRequest(request, requestOptionsInterface, responseHandlerInterface) : customRequest;
+        }
+    };
+
     private EditText urlEditText, headersEditText, bodyEditText;
     private LinearLayout responseLayout;
     public LinearLayout customFieldsLayout;
@@ -174,7 +168,7 @@ public abstract class SampleParentActivity extends Activity implements SampleInt
     }
 
     @Override
-    public AsyncHttpRequest getHttpRequest(HttpClient client, HttpContext httpContext, HttpUriRequest uriRequest, String contentType, ResponseHandlerInterface responseHandler, Context context) {
+    public AsyncHttpRequest getHttpRequest(HttpUriRequest request, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface) {
         return null;
     }
 

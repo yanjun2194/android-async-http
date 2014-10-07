@@ -24,6 +24,7 @@ import com.loopj.android.http.AsyncHttpRequest;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.interfaces.AsyncHttpClientInterface;
 import com.loopj.android.http.interfaces.RequestHandleInterface;
+import com.loopj.android.http.interfaces.RequestOptionsInterface;
 import com.loopj.android.http.interfaces.ResponseHandlerInterface;
 
 import org.apache.http.Header;
@@ -54,7 +55,7 @@ public interface SampleInterface {
 
     void setAsyncHttpClient(AsyncHttpClientInterface client);
 
-    AsyncHttpRequest getHttpRequest(HttpClient client, HttpContext httpContext, HttpUriRequest uriRequest, String contentType, ResponseHandlerInterface responseHandler, Context context);
+    AsyncHttpRequest getHttpRequest(HttpUriRequest request, RequestOptionsInterface requestOptionsInterface, ResponseHandlerInterface responseHandlerInterface);
 
     ResponseHandlerInterface getResponseHandler();
 
