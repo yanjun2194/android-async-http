@@ -1,33 +1,33 @@
 package com.loopj.android.http.impl;
 
-import com.loopj.android.http.interfaces.RequestParamInterface;
+import com.loopj.android.http.abstracts.AbstractRequestParam;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
 
-public class StreamParam implements RequestParamInterface<InputStream> {
+public class StreamParam extends AbstractRequestParam<InputStream> {
 
+    InputStream value;
+
+    public StreamParam(InputStream value) {
+        super(value);
+    }
+
+    @Nullable
     @Override
     public InputStream getValue() {
-        return null;
+        return value;
     }
 
     @Override
     public void setValue(InputStream value) {
-
+        this.value = value;
     }
 
+    @Nullable
     @Override
-    public String getJsonValue() {
-        return null;
-    }
-
-    @Override
-    public String getMultipartValue() {
-        return null;
-    }
-
-    @Override
-    public String getFormValue() {
-        return null;
+    public String getStringValue() {
+        throw new UnsupportedOperationException("Not Yet Implemented");
     }
 }

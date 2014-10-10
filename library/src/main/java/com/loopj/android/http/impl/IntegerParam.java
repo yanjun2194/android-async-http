@@ -4,31 +4,28 @@ import com.loopj.android.http.abstracts.AbstractRequestParam;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
+public class IntegerParam extends AbstractRequestParam<Integer> {
 
-public class FileParam extends AbstractRequestParam<File> {
+    Integer value;
 
-    File value;
-
-    public FileParam(File value) {
+    public IntegerParam(Integer value) {
         super(value);
     }
 
     @Nullable
     @Override
-    public File getValue() {
+    public Integer getValue() {
         return value;
     }
 
     @Override
-    public void setValue(File value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 
     @Nullable
     @Override
     public String getStringValue() {
-        throw new UnsupportedOperationException("Not Yet Implemented");
+        return value == null ? null : value.toString();
     }
-
 }
