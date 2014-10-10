@@ -52,7 +52,8 @@ public class AsyncHttpClient implements AsyncHttpClientInterface {
     private Class<? extends AsyncHttpRequestInterface> requestClass;
 
     /**
-     * Retrieves static instance of AsyncHttpClientInterface, if not yet configured, will configure it with default values
+     * Retrieves static instance of AsyncHttpClientInterface,
+     * if not yet configured, will configure it with default values
      *
      * @see com.loopj.android.http.interfaces.AsyncHttpClientOptionsInterface
      * @see com.loopj.android.http.impl.AsyncHttpClientOptions
@@ -61,6 +62,12 @@ public class AsyncHttpClient implements AsyncHttpClientInterface {
         return getDefaultInstance(new AsyncHttpClientOptions());
     }
 
+    /**
+     * Retrieves static instance of AsyncHttpClientInterface,
+     * if not yet configured, will configure it with provided options
+     *
+     * @see com.loopj.android.http.interfaces.AsyncHttpClientOptionsInterface
+     */
     public static AsyncHttpClientInterface getDefaultInstance(AsyncHttpClientOptionsInterface options) {
         if (DEFAULT_INSTANCE == null) {
             synchronized (AsyncHttpClient.class) {
@@ -72,7 +79,18 @@ public class AsyncHttpClient implements AsyncHttpClientInterface {
         return DEFAULT_INSTANCE;
     }
 
+    /**
+     * Default constructor, will configure AsyncHttpClientInterface
+     * instance with provided options, or with default options,
+     * if provided options argument is null
+     *
+     * @see com.loopj.android.http.interfaces.AsyncHttpClientOptionsInterface
+     * @see com.loopj.android.http.impl.AsyncHttpClientOptions
+     */
     public AsyncHttpClient(AsyncHttpClientOptionsInterface options) {
+        if (options == null) {
+            options = new AsyncHttpClientOptions();
+        }
         httpClient = options.getHttpClient();
         defaultRequestOptions = options.getDefaultRequestOptions();
         threadPool = options.getThreadPool();
