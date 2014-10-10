@@ -13,8 +13,8 @@ def isReleaseBuild() {
 }
 
 allprojects {
-    group = 'com.loopj.android'
-    version = '1.4.7-SNAPSHOT'
+    group = GROUP
+    version = VERSION_NAME
 
     repositories {
         mavenCentral()
