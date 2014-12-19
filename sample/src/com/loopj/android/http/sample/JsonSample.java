@@ -18,8 +18,6 @@
 
 package com.loopj.android.http.sample;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
@@ -88,7 +86,9 @@ public class JsonSample extends SampleParentActivity {
 
             @Override
             protected SampleJSON parseResponse(String rawJsonData, boolean isFailure) throws Throwable {
-                return new ObjectMapper().readValues(new JsonFactory().createParser(rawJsonData), SampleJSON.class).next();
+                // return new ObjectMapper().readValues(new JsonFactory().createParser(rawJsonData), SampleJSON.class).next();
+                // TODO
+                return null;
             }
 
         };

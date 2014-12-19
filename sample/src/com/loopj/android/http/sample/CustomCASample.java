@@ -24,7 +24,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
@@ -153,7 +152,9 @@ public class CustomCASample extends SampleParentActivity {
 
             @Override
             protected SampleJSON parseResponse(String rawJsonData, boolean isFailure) throws Throwable {
-                return new ObjectMapper().readValues(new JsonFactory().createParser(rawJsonData), SampleJSON.class).next();
+                // return new ObjectMapper().readValues(new JsonFactory().createParser(rawJsonData), SampleJSON.class).next();
+            	// TODO
+            	return null;
             }
         };
     }
